@@ -163,27 +163,39 @@ def main():
     # Pinhole opencv calibration options parsing
     num_ks = options.k_coefficients
 
+    print('*** CALIBRATION FLAGS *** ')
+    print('Number of radial distortion coefficients : {} '.format(num_ks))
     calib_flags = 0
     if options.fix_principal_point:
         calib_flags |= cv2.CALIB_FIX_PRINCIPAL_POINT
+        print('adding flag : cv2.CALIB_FIX_PRINCIPAL_POINT')
     if options.fix_aspect_ratio:
         calib_flags |= cv2.CALIB_FIX_ASPECT_RATIO
+        print('adding flag : cv2.CALIB_FIX_ASPECT_RATIO')
     if options.zero_tangent_dist:
         calib_flags |= cv2.CALIB_ZERO_TANGENT_DIST
+        print('adding flag : cv2.CALIB_ZERO_TANGENT_DIST')
     if (num_ks > 3):
         calib_flags |= cv2.CALIB_RATIONAL_MODEL
+        print('adding flag : cv2.CALIB_RATIONAL_MODEL')
     if (num_ks < 6):
         calib_flags |= cv2.CALIB_FIX_K6
+        print('adding flag : cv2.CALIB_FIX_K6')
     if (num_ks < 5):
         calib_flags |= cv2.CALIB_FIX_K5
+        print('adding flag : cv2.CALIB_FIX_K5')
     if (num_ks < 4):
         calib_flags |= cv2.CALIB_FIX_K4
+        print('adding flag : cv2.CALIB_FIX_K4')
     if (num_ks < 3):
         calib_flags |= cv2.CALIB_FIX_K3
+        print('adding flag : cv2.CALIB_FIX_K3')
     if (num_ks < 2):
         calib_flags |= cv2.CALIB_FIX_K2
+        print('adding flag : cv2.CALIB_FIX_K2')
     if (num_ks < 1):
         calib_flags |= cv2.CALIB_FIX_K1
+        print('adding flag : cv2.CALIB_FIX_K1')
 
     # Opencv calibration flags parsing:
     num_ks = options.fisheye_k_coefficients
@@ -217,8 +229,12 @@ def main():
 
     if options.disable_calib_cb_fast_check:
         checkerboard_flags = 0
+        print('adding flag : cv2.CALIB_CB_FAST_CHECK - disabled')
     else:
         checkerboard_flags = cv2.CALIB_CB_FAST_CHECK
+        print('adding flag : cv2.CALIB_CB_FAST_CHECK - enabled')
+    
+    print('*** START CAMERA CALIBRATION NODE *** ')
 
     rospy.init_node('cameracalibrator')
     node = OpenCVCalibrationNode(boards, options.service_check, sync, calib_flags, fisheye_calib_flags, pattern, options.camera_name,
