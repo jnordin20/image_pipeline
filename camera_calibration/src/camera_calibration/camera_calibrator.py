@@ -271,7 +271,8 @@ class OpenCVCalibrationNode(CalibrationNode):
                     self.queue_display.put(self._last_display)
             if self.c.calibrated:
                 if 280 <= y < 380:
-                    self.c.do_save()
+                    print("**** Saving ****")
+                    self.c.do_save(self._camera_name)
                 elif 380 <= y < 480:
                     # Only shut down if we set camera info correctly, #3993
                     if self.do_upload():
